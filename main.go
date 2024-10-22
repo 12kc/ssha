@@ -1,12 +1,11 @@
 package main
 
-// May God have mercy on those who decide to read this
 import (
 	"fmt"
 	"math"
+	"strconv"
 )
 
-// Table of chars used in final hash
 var t = [62]rune{
 	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 	'i', 'j', 'k', 'l', 'm', 'n', 'o',
@@ -18,33 +17,26 @@ var t = [62]rune{
 	'Y', 'Z', '1', '2', '3', '4', '5',
 	'6', '7', '8', '9', '0',
 }
-var input string
-var output []byte
+
+var out = [32]uint8{
+	28, 15, 6, 31, 17, 22, 55, 23, 9,
+	10, 13, 25, 3, 26, 19, 11, 4, 29,
+	5, 24, 18, 21, 7, 16, 2, 30, 12,
+	32, 14, 8, 42, 58,
+}
 
 func main() {
-	fmt.Scan(&input)
-	output = []byte(input)
+	var current float64 = 24
+	var nextChar float64 = 38
 
-	for len, c := 0, 1; c <= len; c++ {
-		var current rune
-		var currentNum float64
-		current = rune(input[c])
+	// Math shit
+	current *= math.Sin(129) + math.Sqrt(9391)/math.Log10(nextChar)
+	current += math.Mod(math.Pow(nextChar, 29)+math.Sqrt(current/4), 2901)
+	current = math.Mod(current, 62)
+	current = math.Abs(current)
 
-		// Check location of char in array
-		for i, aLen := 0, cap(t); i < aLen; i++ {
-			if t[i] == current {
-				currentNum = float64(i)
-			}
-		}
+	var current2 int
+	current2 = int(math.Mod(current, 62))
 
-		// Math shit
-		currentNum *= math.SqrtPi + 238295/math.Sqrt(7)
-		currentNum /= 2949 ^ 3
-		currentNum *= math.Acos(currentNum)
-		currentNum = math.Mod(currentNum, 62)
-
-		current = t[int(currentNum)]
-		output[c] = byte(current)
-		fmt.Println(output)
-	}
+	fmt.Println(strconv.Itoa(current2))
 }
