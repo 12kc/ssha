@@ -31,11 +31,12 @@ func main() {
 	var current float64
 	var nextChar float64
 
+	fmt.Println("Input the string to hash.")
 	fmt.Scan(&input)
 	// Check what place in table
 	for i, v := range t {
-		if v == input[i] {
-			current, nextChar = i, input[i+1]
+		if v == rune(input[i]) {
+			current, nextChar = float64(i), float64(i+1)
 		}
 	}
 
