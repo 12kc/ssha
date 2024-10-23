@@ -30,13 +30,18 @@ var (
 func main() {
 	var current float64
 	var nextChar float64
+	in := make([]int, 0)
 
 	fmt.Println("Input the string to hash.")
 	fmt.Scan(&input)
+
 	// Check what place in table
 	for i, v := range t {
-		if v == rune(input[i]) {
-			current, nextChar = float64(i), float64(i+1)
+		var c int
+		if v == '3' {
+			c++
+			in = append(in, i)
+			// current, nextChar = float64(i), float64(i+1) // Bad logic, add slice of ints for word?
 		}
 	}
 
