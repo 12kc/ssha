@@ -28,27 +28,26 @@ var (
 )
 
 func main() {
-	var current float64
-	var nextChar float64
 	in := make([]int, 0)
 
 	fmt.Println("Input the string to hash.")
 	fmt.Scan(&input)
 
-	// Check what place in table
-	for i, v := range t {
-		var c int
-		if v == '3' {
-			c++
-			in = append(in, i)
-			// current, nextChar = float64(i), float64(i+1) // Bad logic, add slice of ints for word?
+	// Check if input is in table
+	for _, char := range input {
+		for j, runeVal := range t {
+			if runeVal == char {
+				in = append(in, j)
+				break
+			}
 		}
 	}
 
-	for i, l := 0, len(input); i < l+overlap; i++ {
-		c := hash(current, nextChar)
+	for i, l := 0, len(in); i < l+overlap; i++ {
+		c := hash(float64(in[i]), float64(in[i+1]))
 		out[i] = (out[i] + uint8(c)) % 62
 	}
+	fmt.Println(out)
 }
 
 func hash(current float64, nextChar float64) int {
