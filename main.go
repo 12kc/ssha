@@ -43,16 +43,25 @@ func main() {
 		}
 	}
 
+	// Fix overlap
+	if overlap < 0 {
+		overlap = 0
+	}
+
 	for i, l := 0, len(in); i < l+overlap; i++ {
-		c := hash(float64(in[i]), float64(in[i+1]))
-		out[i] = (out[i] + uint8(c)) % 62
+		c := hash(float64(in[i]))
+		if c < 128 {
+			out[i] = (out[i] + uint8(c)) % 62
+		} else {
+			out[i] = (out[i] - uint8(c)) % 62
+		}
 	}
 	fmt.Println(out)
 }
 
-func hash(current float64, nextChar float64) int {
-	current *= math.Sin(129) + math.Sqrt(9391)/math.Log10(nextChar)
-	current += math.Mod(math.Pow(nextChar, 29)+math.Sqrt(current/4), 2901)
-	current = math.Mod(current, 62)
-	return int(current)
+func hash(c float64) int {
+	c *= math.Sin(129) + math.Sqrt(9391)/math.Log10(c)
+	c += math.Mod(math.Pow(c, 29)/math.Sqrt(3), 17)
+	c = math.Mod(c, 255)
+	return int(c)
 }
