@@ -2,7 +2,9 @@ package ssha
 
 import "math"
 
-func Hash(in string) string {
+// This is all very messy, it wasn't meant to be good, much less be readable ;)
+
+func Hash(in string) [32]uint8 {
 	var t = [62]rune{ // Table of chars available, for input/output
 		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 		'i', 'j', 'k', 'l', 'm', 'n', 'o',
@@ -42,6 +44,7 @@ func Hash(in string) string {
 		c += math.Mod(math.Pow(c, 29)/math.Sqrt(3), 17)
 		c = math.Mod(c, 255)
 
+		inMap[i] = int(c)
 	}
 
 	// Fix overlap before string processing
@@ -50,11 +53,18 @@ func Hash(in string) string {
 	}
 
 	// Combine into out[]
+	/* TODO: Loop multiple times to account for length of input
+	// Ex: input = jfz
+	// l = len(input)
+	// loop over loop below (nested?) in order to go over the full
+	// table l amount of times
+	*/
 	for i, l := 0, len(in); i < l+overlap; i++ {
-		if c < 128 {
-			out[i] = (out[i] + uint8(c)) % 62
+		if inMap[i] < 128 {
+			out[i] = (out[i] + uint8(inMap[i])) % 62
 		} else {
-			out[i] = (out[i] - uint8(c)) % 62
+			out[i] = (out[i] - uint8(inMap[i])) % 62
 		}
 	}
+	return out
 }
