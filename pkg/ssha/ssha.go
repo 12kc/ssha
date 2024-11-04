@@ -59,11 +59,13 @@ func Hash(in string) [32]uint8 {
 	// loop over loop below (nested?) in order to go over the full
 	// table l amount of times
 	*/
-	for i, l := 0, len(in); i < l+overlap; i++ {
-		if inMap[i] < 128 {
-			out[i] = (out[i] + uint8(inMap[i])) % 62
-		} else {
-			out[i] = (out[i] - uint8(inMap[i])) % 62
+	for i := 0; i < len(out); i++ {
+		for j := 0; j < len(in); j++ {
+			if inMap[j] < 128 {
+				out[i] = (out[i] + uint8(inMap[j])) % 62
+			} else {
+				out[i] = (out[i] - uint8(inMap[j])) % 62
+			}
 		}
 	}
 	return out
